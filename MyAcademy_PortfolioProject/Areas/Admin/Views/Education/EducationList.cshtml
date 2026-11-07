@@ -1,0 +1,104 @@
+﻿@model List<MyAcademy_PortfolioProject.Entites.Education>
+
+@{
+    ViewData["Title"] = "EducationList";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Eğitim Bilgilerim</h1>
+            <p class="page-subtitle">Okul, bölüm ve sertifika bilgilerinizi yönetin.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/Education/CreateEducation" class="btn-pastel-primary">
+                <i class="bi bi-plus-circle-fill"></i><span>Yeni Eğitim Ekle</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon-wrapper icon-green"><i class="bi bi-mortarboard"></i></div>
+            <div class="stat-content">
+                <span class="stat-label">Toplam Kayıt</span>
+                <h3 class="stat-value">@Model.Count</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-table-card">
+        <div class="table-responsive-wrapper">
+            <table class="custom-admin-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">ID</th>
+                        <th>Okul / Kurum</th>
+                        <th>Bölüm</th>
+                        <th>Derece</th>
+                        <th>Yıllar</th>
+                        <th style="text-align: right; width: 140px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="6" class="text-center text-muted py-4">Henüz eğitim bilgisi eklenmemiş.</td></tr>
+                    }
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="col-id">#@item.EducationId</td>
+                            <td><span class="exp-title-text">@item.SchoolName</span></td>
+                            <td>@item.Department</td>
+                            <td><span class="work-type-badge">@(item.Degree ?? "-")</span></td>
+                            <td>
+                                <span class="date-badge">
+                                    <i class="bi bi-calendar2-range"></i>
+                                    @item.StartYear - @(item.EndYear?.ToString() ?? "Devam ediyor")
+                                </span>
+                            </td>
+                            <td style="text-align: right;">
+                                <div class="row-actions-group justify-content-end">
+                                    <a href="/Admin/Education/UpdateEducation/@item.EducationId" class="btn-action-icon btn-edit" title="Güncelle">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <button type="button" class="btn-action-icon btn-delete" title="Sil"
+                                            onclick="confirmDelete('/Admin/Education/DeleteEducation/@item.EducationId', '@item.SchoolName')">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(url, title) {
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: '"' + title + '" kalıcı olarak silinecek.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonText: 'Vazgeç',
+            confirmButtonText: 'Evet, sil'
+        }).then((result) => {
+            if (result.isConfirmed) window.location.href = url;
+        });
+    }
+
+    @if (TempData["Success"] != null)
+    {
+            <text>
+            Swal.fire({ icon: 'success', title: '@TempData["Success"]', timer: 2000, showConfirmButton: false });
+            </text>
+    }
+</script>

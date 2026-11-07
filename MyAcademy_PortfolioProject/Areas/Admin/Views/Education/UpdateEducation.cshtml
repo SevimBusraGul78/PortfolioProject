@@ -1,0 +1,34 @@
+﻿@model MyAcademy_PortfolioProject.Entites.Education
+
+@{
+    ViewData["Title"] = "UpdateEducation";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Eğitimi Güncelle</h1>
+            <p class="page-subtitle">@Model.SchoolName kaydını düzenliyorsunuz.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/Education/EducationList" class="btn-pastel-secondary">
+                <i class="bi bi-arrow-left"></i><span>Listeye Dön</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="side-drawer-card">
+        <form asp-action="UpdateEducation" method="post">
+            <input type="hidden" asp-for="EducationId" />
+            <partial name="_EducationForm" model="Model" />
+
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <a href="/Admin/Education/EducationList" class="btn-pastel-secondary">İptal</a>
+                <button type="submit" class="btn-pastel-primary">
+                    <i class="bi bi-check-lg"></i><span>Güncelle</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</main>

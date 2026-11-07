@@ -1,0 +1,29 @@
+﻿@model MyAcademy_PortfolioProject.Entites.SocialMedia
+
+@{
+    ViewData["Title"] = "CreateSocialMedia";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Yeni Sosyal Medya Bağlantısı</h1>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/SocialMedia/SocialMediaList" class="btn-pastel-secondary">
+                <i class="bi bi-arrow-left"></i><span>Listeye Dön</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="side-drawer-card">
+        <form asp-action="CreateSocialMedia" method="post">
+            <partial name="_SocialMediaForm" model="Model" />
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <a href="/Admin/SocialMedia/SocialMediaList" class="btn-pastel-secondary">İptal</a>
+                <button type="submit" class="btn-pastel-primary"><i class="bi bi-check-lg"></i><span>Kaydet</span></button>
+            </div>
+        </form>
+    </div>
+</main>

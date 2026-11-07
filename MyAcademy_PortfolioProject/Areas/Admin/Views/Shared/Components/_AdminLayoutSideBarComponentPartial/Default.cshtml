@@ -1,0 +1,112 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    string Active(params string[] names) => names.Contains(currentController) ? "active" : "";
+}
+
+<aside class="admin-sidebar" id="adminSidebar">
+    <!-- Brand Header -->
+    <div class="sidebar-header">
+        <div class="brand-mark">
+            <i class="bi bi-briefcase-fill"></i>
+        </div>
+        <div class="brand-text">
+            <h1>Portfolyo Admin</h1>
+            <span>Yönetim Paneli</span>
+        </div>
+    </div>
+
+    <!-- Menu Links -->
+    <div class="sidebar-menu-wrapper">
+        <div class="menu-section-label">Menü</div>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="/Admin/Dashboard/Index" class="sidebar-link @Active("Dashboard")">
+                    <i class="bi bi-grid-1x2"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/HeroSection/EditHero" class="sidebar-link @Active("HeroSection")">
+                    <i class="bi bi-person"></i>
+                    <span>Hakkımda</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/SkillItem/SkillItemList" class="sidebar-link @Active("SkillItem", "Skill")">
+                    <i class="bi bi-stars"></i>
+                    <span>Yeteneklerim</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Experience/ExperienceList" class="sidebar-link @Active("Experience")">
+                    <i class="bi bi-journal-bookmark-fill"></i>
+                    <span>Deneyimlerim</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Project/ProjeList" class="sidebar-link @Active("Project", "Category")">
+                    <i class="bi bi-code-slash"></i>
+                    <span>Projelerim</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Education/EducationList" class="sidebar-link @Active("Education")">
+                    <i class="bi bi-mortarboard"></i>
+                    <span>Eğitim</span>
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Message/MessageList" class="sidebar-link @Active("Message")">
+                    <i class="bi bi-inbox"></i>
+                    <span>Gelen Kutusu</span>
+                    @if (ViewBag.UnreadCount > 0)
+                    {
+                        <span class="badge-count">@ViewBag.UnreadCount</span>
+                    }
+                </a>
+            </li>
+            <li>
+                <a href="/Admin/Contact/EditContact" class="sidebar-link @Active("Contact", "SocialMedia")">
+                    <i class="bi bi-envelope"></i>
+                    <span>İletişim</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-link">
+                    <i class="bi bi-gear"></i>
+                    <span>Ayarlar</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu-section-label mt-4">Sistem & Bağlantı</div>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="/" target="_blank" class="sidebar-link">
+                    <i class="bi bi-box-arrow-up-right"></i>
+                    <span>Siteyi Önizle</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-link">
+                    <i class="bi bi-file-earmark-code"></i>
+                    <span>ASP.NET API</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Admin User / Logout Footer -->
+    <div class="sidebar-footer">
+        <div class="admin-user-card">
+            <div class="user-avatar-circle">AK</div>
+            <div class="user-info">
+                <div class="user-name">Admin Kullanıcı</div>
+                <div class="user-role">İçerik Yöneticisi</div>
+            </div>
+            <button class="btn-logout" title="Çıkış Yap" id="btnLogout">
+                <i class="bi bi-box-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</aside>

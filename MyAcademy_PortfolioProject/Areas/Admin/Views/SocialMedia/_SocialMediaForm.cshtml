@@ -1,0 +1,35 @@
+﻿@model MyAcademy_PortfolioProject.Entites.SocialMedia
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <label class="form-label-custom">Platform <span class="required-star">*</span></label>
+        <input asp-for="Platform" class="form-control-custom" placeholder="Örn: GitHub" />
+        <span asp-validation-for="Platform" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label-custom">İkon <span class="required-star">*</span></label>
+        <select asp-for="Icon" class="form-control-custom" onchange="document.getElementById('iconPreview').className = this.value">
+            <option value="">-- Seçiniz --</option>
+            <option value="bi bi-github">GitHub</option>
+            <option value="bi bi-linkedin">LinkedIn</option>
+            <option value="bi bi-instagram">Instagram</option>
+            <option value="bi bi-youtube">YouTube</option>
+            <option value="bi bi-twitter-x">X (Twitter)</option>
+            <option value="bi bi-medium">Medium</option>
+            <option value="bi bi-globe">Web Sitesi</option>
+        </select>
+        <span asp-validation-for="Icon" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-end">
+        <span class="text-muted small me-2">Önizleme:</span>
+        <i id="iconPreview" class="@Model?.Icon" style="font-size: 1.8rem;"></i>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label-custom">Bağlantı <span class="required-star">*</span></label>
+        <input asp-for="Url" class="form-control-custom" placeholder="https://github.com/kullaniciadi" />
+        <span asp-validation-for="Url" class="text-danger small"></span>
+    </div>
+</div>

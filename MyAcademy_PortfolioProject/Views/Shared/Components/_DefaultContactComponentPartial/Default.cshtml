@@ -1,0 +1,161 @@
+﻿@model MyAcademy_PortfolioProject.Entites.Contact
+@{
+    var socialMedias = ViewBag.SocialMedias as List<MyAcademy_PortfolioProject.Entites.SocialMedia>
+                       ?? new List<MyAcademy_PortfolioProject.Entites.SocialMedia>();
+}
+
+<section id="contact">
+    <div class="container">
+        <div class="row gy-5">
+
+            <!-- Sol: İletişim bilgileri (admin'den) -->
+            <div class="col-lg-5 reveal-on-scroll">
+                <div class="eyebrow-badge">
+                    <i class="bi bi-envelope-paper-fill"></i> İLETİŞİME GEÇELİM
+                </div>
+                <h2 class="section-title">
+                    @(string.IsNullOrEmpty(Model.Title) ? "Harika Bir Fikrin mi Var? Birlikte Hayata Geçirelim." : Model.Title)
+                </h2>
+                <p class="text-muted mb-4 fs-6">
+                    @(string.IsNullOrEmpty(Model.Description) ? "Yeni projeler, iş birlikleri veya teknoloji üzerine sohbet etmek için benimle iletişime geçebilirsin." : Model.Description)
+                </p>
+
+                <div class="d-flex flex-column gap-3 mb-4">
+                    @if (!string.IsNullOrEmpty(Model.Email))
+                    {
+                        <a href="mailto:@Model.Email" class="d-flex align-items-center gap-3 p-3 bg-white border rounded-3 shadow-sm text-decoration-none text-dark">
+                            <div class="skill-icon-box mb-0" style="width: 44px; height: 44px; background: var(--bg-secondary);">
+                                <i class="bi bi-envelope"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">E-posta</div>
+                                <div class="fw-semibold">@Model.Email</div>
+                            </div>
+                        </a>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                    {
+                        <a href="tel:@Model.PhoneNumber.Replace(" ", "")" class="d-flex align-items-center gap-3 p-3 bg-white border rounded-3 shadow-sm text-decoration-none text-dark">
+                            <div class="skill-icon-box mb-0" style="width: 44px; height: 44px; background: var(--bg-secondary);">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Telefon</div>
+                                <div class="fw-semibold">@Model.PhoneNumber</div>
+                            </div>
+                        </a>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.Location))
+                    {
+                        <div class="d-flex align-items-center gap-3 p-3 bg-white border rounded-3 shadow-sm">
+                            <div class="skill-icon-box mb-0" style="width: 44px; height: 44px; background: var(--bg-secondary);">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div>
+                                <div class="text-muted small">Konum</div>
+                                <div class="fw-semibold">@Model.Location</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (socialMedias.Any())
+                {
+                    <div class="pt-2">
+                        <div class="text-muted small font-heading fw-semibold mb-2">Sosyal Ağlar:</div>
+                        <div class="d-flex gap-2">
+                            @foreach (var s in socialMedias)
+                            {
+                                <a href="@s.Url" target="_blank" rel="noopener noreferrer" class="social-pill" title="@s.Platform">
+                                    <i class="@s.Icon"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Sağ: Mesaj formu -->
+            <div class="col-lg-7 ps-lg-5 reveal-on-scroll">
+                <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+                    <form id="dynamicContactForm" novalidate>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Adınız Soyadınız *</label>
+                                <input type="text" name="SenderName" class="form-control form-control-custom" placeholder="Örn: Ahmet Yılmaz">
+                                <small class="text-danger" data-error-for="SenderName"></small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">E-posta Adresiniz *</label>
+                                <input type="email" name="SenderEmail" class="form-control form-control-custom" placeholder="ad@ornek.com">
+                                <small class="text-danger" data-error-for="SenderEmail"></small>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Konu *</label>
+                                <input type="text" name="Subject" class="form-control form-control-custom" placeholder="Örn: Proje Teklifi">
+                                <small class="text-danger" data-error-for="Subject"></small>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Mesajınız *</label>
+                                <textarea name="MessageDetail" class="form-control form-control-custom" rows="5" placeholder="Projeniz veya sorunuz hakkında detayları paylaşın..."></textarea>
+                                <small class="text-danger" data-error-for="MessageDetail"></small>
+                            </div>
+                            <div class="col-12 pt-2">
+                                <button type="submit" id="contactSubmitBtn" class="btn-sage w-100 justify-content-center py-3 fs-6">
+                                    <i class="bi bi-send-fill"></i>
+                                    <span>Mesajımı Gönder</span>
+                                </button>
+                                <div id="contactFeedback" class="mt-3 text-center small"></div>
+                                <div class="text-muted text-center small mt-3" style="font-size: 0.78rem;">
+                                    <i class="bi bi-shield-check me-1"></i> Gönderilen bilgiler gizlilik ilkeleri doğrultusunda korunmaktadır.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    document.getElementById('dynamicContactForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const form = this;
+        const btn = document.getElementById('contactSubmitBtn');
+        const feedback = document.getElementById('contactFeedback');
+
+        form.querySelectorAll('[data-error-for]').forEach(el => el.textContent = '');
+        feedback.textContent = '';
+        btn.disabled = true;
+        btn.querySelector('span').textContent = 'Gönderiliyor...';
+
+        fetch('/Default/SendMessage', { method: 'POST', body: new FormData(form) })
+            .then(r => r.json())
+            .then(result => {
+                if (result.success) {
+                    feedback.className = 'mt-3 text-center small text-success fw-semibold';
+                    feedback.textContent = '✓ Mesajınız iletildi. En kısa sürede dönüş yapacağım.';
+                    form.reset();
+                } else {
+                    for (const field in result.errors) {
+                        const el = form.querySelector('[data-error-for="' + field + '"]');
+                        if (el) el.textContent = result.errors[field];
+                    }
+                    feedback.className = 'mt-3 text-center small text-danger';
+                    feedback.textContent = 'Lütfen işaretli alanları kontrol edin.';
+                }
+            })
+            .catch(() => {
+                feedback.className = 'mt-3 text-center small text-danger';
+                feedback.textContent = 'Bir hata oluştu, lütfen tekrar deneyin.';
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.querySelector('span').textContent = 'Mesajımı Gönder';
+            });
+    });
+</script>

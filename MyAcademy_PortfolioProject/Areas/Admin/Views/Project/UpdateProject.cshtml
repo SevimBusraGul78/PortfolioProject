@@ -1,0 +1,110 @@
+﻿@model MyAcademy_PortfolioProject.Entites.Project
+
+@{
+    ViewData["Title"] = "UpdateProject";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Projeyi Güncelle</h1>
+            <p class="page-subtitle">@Model.ProjectTitle projesini düzenliyorsunuz.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/Project/ProjeList" class="btn-pastel-secondary">
+                <i class="bi bi-arrow-left"></i>
+                <span>Listeye Dön</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="side-drawer-card">
+        <form asp-action="UpdateProject" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ProjectId" />
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Proje Adı <span class="required-star">*</span></label>
+                    <input asp-for="ProjectTitle" class="form-control-custom" />
+                    <span asp-validation-for="ProjectTitle" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Kategori <span class="required-star">*</span></label>
+                    <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control-custom">
+                        <option value="0">-- Kategori seçiniz --</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label-custom">Açıklama <span class="required-star">*</span></label>
+                    <textarea asp-for="Description" class="form-control-custom" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Teknolojiler</label>
+                    <input asp-for="Technologies" class="form-control-custom" />
+                    <small class="text-muted">Virgülle ayırarak yazınız.</small>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Durum</label>
+                    <select name="IsActive" class="form-control-custom">
+                        <option value="true" selected="@(Model.IsActive)">Aktif (Sitede göster)</option>
+                        <option value="false" selected="@(!Model.IsActive)">Pasif (Gizle)</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Yeni Görsel</label>
+                    <input type="file" name="imageFile" class="form-control-custom"
+                           accept=".jpg,.jpeg,.png,.webp" onchange="previewImage(this)" />
+                    <small class="text-muted">Boş bırakırsanız mevcut görsel korunur.</small>
+                    <span asp-validation-for="ImageUrl" class="text-danger small d-block"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom d-block">Mevcut Görsel</label>
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img id="imagePreview" src="@Model.ImageUrl" alt="Görsel"
+                             style="max-height:140px; border-radius:12px; border:1px solid #e5e5e5;" />
+                    }
+                    else
+                    {
+                        <img id="imagePreview" src="" alt="Önizleme"
+                             style="display:none; max-height:140px; border-radius:12px; border:1px solid #e5e5e5;" />
+                        <span class="text-muted small" id="noImageText">Görsel yok</span>
+                    }
+                </div>
+
+                <div class="col-12 d-flex justify-content-end gap-2">
+                    <a href="/Admin/Project/ProjeList" class="btn-pastel-secondary">İptal</a>
+                    <button type="submit" class="btn-pastel-primary">
+                        <i class="bi bi-check-lg"></i>
+                        <span>Güncelle</span>
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</main>
+
+<script>
+    function previewImage(input) {
+        const preview = document.getElementById('imagePreview');
+        const noImage = document.getElementById('noImageText');
+        if (input.files && input.files[0]) {
+            preview.src = URL.createObjectURL(input.files[0]);
+            preview.style.display = 'block';
+            if (noImage) noImage.style.display = 'none';
+        }
+    }
+</script>

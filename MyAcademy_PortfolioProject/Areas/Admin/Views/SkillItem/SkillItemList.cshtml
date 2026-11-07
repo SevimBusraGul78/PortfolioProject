@@ -1,0 +1,116 @@
+﻿@model List<MyAcademy_PortfolioProject.Entites.SkillItem>
+
+@{
+    ViewData["Title"] = "SkillItemList";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Yeteneklerim</h1>
+            <p class="page-subtitle">Yeteneklerinizi ve seviyelerini (0-100) buradan yönetebilirsiniz.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/Skill/SkillList" class="btn-pastel-secondary">
+                <i class="bi bi-collection"></i>
+                <span>Yetenek Grupları</span>
+            </a>
+            <a href="/Admin/SkillItem/CreateSkillItem" class="btn-pastel-primary">
+                <i class="bi bi-plus-circle-fill"></i>
+                <span>Yeni Yetenek Ekle</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon-wrapper icon-green">
+                <i class="bi bi-stars"></i>
+            </div>
+            <div class="stat-content">
+                <span class="stat-label">Toplam Yetenek</span>
+                <h3 class="stat-value">@Model.Count</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-table-card">
+        <div class="table-responsive-wrapper">
+            <table class="custom-admin-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">ID</th>
+                        <th>Yetenek</th>
+                        <th>Grup</th>
+                        <th style="width: 260px;">Seviye</th>
+                        <th style="text-align: right; width: 140px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="col-id">#@item.SkillItemId</td>
+                            <td><span class="exp-title-text">@item.SkillItemTitle</span></td>
+                            <td><span class="work-type-badge">@item.Skill?.Title</span></td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="progress flex-grow-1" style="height: 8px;">
+                                        <div class="progress-bar bg-success" style="width: @item.Level%;"></div>
+                                    </div>
+                                    <small class="fw-bold">%@item.Level</small>
+                                </div>
+                            </td>
+                            <td style="text-align: right;">
+                                <div class="row-actions-group justify-content-end">
+                                    <a href="/Admin/SkillItem/UpdateSkillItem/@item.SkillItemId" class="btn-action-icon btn-edit" title="Güncelle">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <button type="button" class="btn-action-icon btn-delete" title="Sil"
+                                            onclick="confirmDelete('/Admin/SkillItem/DeleteSkillItem/@item.SkillItemId', '@item.SkillItemTitle')">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDelete(url, title) {
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: '"' + title + '" kalıcı olarak silinecek.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonText: 'Vazgeç',
+            confirmButtonText: 'Evet, sil'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    }
+
+    @if (TempData["Success"] != null)
+    {
+            <text>
+            Swal.fire({
+                icon: 'success',
+                title: '@TempData["Success"]',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            </text>
+
+    }
+</script>

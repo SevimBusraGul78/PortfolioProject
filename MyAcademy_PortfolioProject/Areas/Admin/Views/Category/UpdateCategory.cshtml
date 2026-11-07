@@ -1,0 +1,45 @@
+﻿@model MyAcademy_PortfolioProject.Entites.Category
+
+@{
+    ViewData["Title"] = "UpdateCategory";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Kategoriyi Güncelle</h1>
+            <p class="page-subtitle">@Model.CategoryName kategorisini düzenliyorsunuz.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/Category/CategoryList" class="btn-pastel-secondary">
+                <i class="bi bi-arrow-left"></i>
+                <span>Listeye Dön</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="side-drawer-card">
+        <form asp-action="UpdateCategory" method="post">
+            <input type="hidden" asp-for="CategoryId" />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label-custom">Kategori Adı <span class="required-star">*</span></label>
+                    <input asp-for="CategoryName" class="form-control-custom" />
+                    <span asp-validation-for="CategoryName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end gap-2">
+                    <a href="/Admin/Category/CategoryList" class="btn-pastel-secondary">İptal</a>
+                    <button type="submit" class="btn-pastel-primary">
+                        <i class="bi bi-check-lg"></i>
+                        <span>Güncelle</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</main>

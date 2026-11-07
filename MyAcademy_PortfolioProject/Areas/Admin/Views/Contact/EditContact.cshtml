@@ -1,0 +1,78 @@
+﻿@model MyAcademy_PortfolioProject.Entites.Contact
+
+@{
+    ViewData["Title"] = "EditContact";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">İletişim Bilgileri</h1>
+            <p class="page-subtitle">Sitenin iletişim bölümünde görünen bilgiler.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/SocialMedia/SocialMediaList" class="btn-pastel-secondary">
+                <i class="bi bi-share"></i>
+                <span>Sosyal Medya</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="side-drawer-card">
+        <form asp-action="EditContact" method="post">
+            <input type="hidden" asp-for="ContactId" />
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">E-posta <span class="required-star">*</span></label>
+                    <input asp-for="Email" class="form-control-custom" placeholder="ornek@mail.com" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Telefon</label>
+                    <input asp-for="PhoneNumber" class="form-control-custom" placeholder="Örn: 0555 555 55 55" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Konum</label>
+                    <input asp-for="Location" class="form-control-custom" placeholder="Örn: İstanbul, Türkiye" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Bölüm Başlığı</label>
+                    <input asp-for="Title" class="form-control-custom" placeholder="Örn: Harika Bir Fikrin mi Var?" />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label-custom">Bölüm Açıklaması</label>
+                    <textarea asp-for="Description" class="form-control-custom" rows="3"
+                              placeholder="İletişim bölümünde başlığın altında görünecek metin..."></textarea>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn-pastel-primary">
+                        <i class="bi bi-check-lg"></i>
+                        <span>Kaydet</span>
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    @if (TempData["Success"] != null)
+    {
+            <text>
+            Swal.fire({ icon: 'success', title: '@TempData["Success"]', timer: 2000, showConfirmButton: false });
+            </text>
+    }
+</script>

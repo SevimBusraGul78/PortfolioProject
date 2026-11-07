@@ -1,0 +1,81 @@
+﻿@model MyAcademy_PortfolioProject.Entites.Experience
+
+@{
+    ViewData["Title"] = "UpdateExperience";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Deneyimi Güncelle</h1>
+            <p class="page-subtitle">@Model.Title deneyimini düzenliyorsunuz.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/Experience/ExperienceList" class="btn-pastel-secondary">
+                <i class="bi bi-arrow-left"></i>
+                <span>Listeye Dön</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="side-drawer-card">
+        <form asp-action="UpdateExperience" method="post">
+            <input type="hidden" asp-for="ExperienceId" />
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Deneyim Başlığı <span class="required-star">*</span></label>
+                    <input asp-for="Title" class="form-control-custom" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Şirket / Kurum Adı <span class="required-star">*</span></label>
+                    <input asp-for="CompanyName" class="form-control-custom" />
+                    <span asp-validation-for="CompanyName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Çalışma Türü <span class="required-star">*</span></label>
+                    <select asp-for="CategoryName" class="form-control-custom">
+                        <option value="">-- Seçiniz --</option>
+                        <option value="Tam Zamanlı">Tam Zamanlı</option>
+                        <option value="Yarı Zamanlı">Yarı Zamanlı</option>
+                        <option value="Hibrit">Hibrit</option>
+                        <option value="Uzaktan">Uzaktan</option>
+                        <option value="Stajyer">Stajyer</option>
+                        <option value="Freelance">Freelance</option>
+                    </select>
+                    <span asp-validation-for="CategoryName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Durum</label>
+                    <select name="IsActive" class="form-control-custom">
+                        <option value="true" selected="@(Model.IsActive)">Aktif (Sitede göster)</option>
+                        <option value="false" selected="@(!Model.IsActive)">Pasif (Gizle)</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label-custom">Açıklama / Görev Kapsamı <span class="required-star">*</span></label>
+                    <textarea asp-for="Description" class="form-control-custom" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end gap-2">
+                    <a href="/Admin/Experience/ExperienceList" class="btn-pastel-secondary">İptal</a>
+                    <button type="submit" class="btn-pastel-primary">
+                        <i class="bi bi-check-lg"></i>
+                        <span>Güncelle</span>
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</main>

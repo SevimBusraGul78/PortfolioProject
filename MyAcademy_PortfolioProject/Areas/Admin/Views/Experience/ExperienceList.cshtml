@@ -1,0 +1,169 @@
+﻿@model List<MyAcademy_PortfolioProject.Entites.Experience>
+
+@{
+    ViewData["Title"] = "ExperienceList";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    var activeCount = Model.Count(x => x.IsActive);
+    var passiveCount = Model.Count(x => !x.IsActive);
+}
+
+<main class="page-content-area">
+
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Deneyimlerim Listesi</h1>
+            <p class="page-subtitle">Portfolyo sitenizde yer alacak deneyim içeriklerini buradan yönetebilirsiniz.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/Experience/CreateExperience" class="btn-pastel-primary">
+                <i class="bi bi-plus-circle-fill"></i>
+                <span>Yeni Deneyim Ekle</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon-wrapper icon-green"><i class="bi bi-briefcase"></i></div>
+            <div class="stat-content">
+                <span class="stat-label">Toplam Deneyim</span>
+                <h3 class="stat-value">@Model.Count</h3>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon-wrapper icon-blue"><i class="bi bi-check2-circle"></i></div>
+            <div class="stat-content">
+                <span class="stat-label">Aktif Kayıt</span>
+                <h3 class="stat-value">@activeCount</h3>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon-wrapper icon-beige"><i class="bi bi-pause-circle"></i></div>
+            <div class="stat-content">
+                <span class="stat-label">Pasif Kayıt</span>
+                <h3 class="stat-value">@passiveCount</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-table-card">
+
+        <div class="table-filter-bar">
+            <div class="filters-left-group">
+                <div class="filter-search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="searchInput" placeholder="Başlık veya şirkete göre ara..." oninput="filterTable()">
+                </div>
+                <select class="filter-select" id="statusFilter" onchange="filterTable()">
+                    <option value="all">Durum (Tümü)</option>
+                    <option value="Aktif">Aktif</option>
+                    <option value="Pasif">Pasif</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive-wrapper">
+            <table class="custom-admin-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">ID</th>
+                        <th>Deneyim Başlığı</th>
+                        <th>Kurum / Şirket</th>
+                        <th>Çalışma Türü</th>
+                        <th>Durum</th>
+                        <th style="text-align: right; width: 140px;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="6" class="text-center text-muted py-4">Henüz deneyim eklenmemiş.</td></tr>
+                    }
+
+                    @foreach (var item in Model)
+                    {
+                        <tr class="exp-row"
+                            data-search="@($"{item.Title} {item.CompanyName}".ToLower())"
+                            data-status="@(item.IsActive ? "Aktif" : "Pasif")">
+                            <td class="col-id">#@item.ExperienceId</td>
+                            <td>
+                                <div class="experience-title-cell">
+                                    <div class="exp-icon-bullet"><i class="bi bi-laptop"></i></div>
+                                    <div>
+                                        <span class="exp-title-text">@item.Title</span>
+                                        <small class="text-muted d-block" style="font-size:0.75rem;">
+                                            @(item.Description?.Length > 60 ? item.Description.Substring(0, 60) + "..." : item.Description)
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="company-cell">
+                                    <i class="bi bi-building company-badge-icon"></i>
+                                    <span>@item.CompanyName</span>
+                                </div>
+                            </td>
+                            <td><span class="work-type-badge">@item.CategoryName</span></td>
+                            <td>
+                                @if (item.IsActive)
+                                {
+                                    <span class="status-pill status-active">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="status-pill status-passive">Pasif</span>
+                                }
+                            </td>
+                            <td style="text-align: right;">
+                                <div class="row-actions-group justify-content-end">
+                                    <a href="/Admin/Experience/UpdateExperience/@item.ExperienceId" class="btn-action-icon btn-edit" title="Güncelle">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <button type="button" class="btn-action-icon btn-delete" title="Sil"
+                                            onclick="confirmDelete('/Admin/Experience/DeleteExperience/@item.ExperienceId', '@item.Title')">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function filterTable() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const status = document.getElementById('statusFilter').value;
+        document.querySelectorAll('.exp-row').forEach(row => {
+            const ok = row.dataset.search.includes(search) &&
+                       (status === 'all' || row.dataset.status === status);
+            row.style.display = ok ? '' : 'none';
+        });
+    }
+
+    function confirmDelete(url, title) {
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: '"' + title + '" kalıcı olarak silinecek.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonText: 'Vazgeç',
+            confirmButtonText: 'Evet, sil'
+        }).then((result) => {
+            if (result.isConfirmed) window.location.href = url;
+        });
+    }
+
+    @if (TempData["Success"] != null)
+    {
+            <text>
+            Swal.fire({ icon: 'success', title: '@TempData["Success"]', timer: 2000, showConfirmButton: false });
+            </text>
+    }
+</script>

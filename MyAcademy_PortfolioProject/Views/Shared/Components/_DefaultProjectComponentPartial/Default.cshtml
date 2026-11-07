@@ -1,0 +1,106 @@
+﻿@model List<MyAcademy_PortfolioProject.Entites.Project>
+
+@{
+    // Sadece aktif projesi olan kategorileri filtre butonu olarak göster
+    var categories = Model.Where(x => x.Category != null)
+                          .Select(x => x.Category)
+                          .GroupBy(c => c.CategoryId)
+                          .Select(g => g.First())
+                          .ToList();
+}
+
+<section id="projects">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3 reveal-on-scroll">
+            <div>
+                <div class="eyebrow-badge">
+                    <i class="bi bi-folder-check"></i> SEÇİLMİŞ ÇALIŞMALAR
+                </div>
+                <h2 class="section-title mb-1">
+                    Fikirden Ürüne Dönüşen Projeler
+                </h2>
+                <p class="section-description mb-0">
+                    Öğrenme, üretme ve problem çözme süreçlerimin birer yansıması olan projelerimden bazıları.
+                </p>
+            </div>
+
+            <!-- Filtre Butonları (veritabanından) -->
+            <div class="d-flex flex-wrap gap-2" id="dynamicProjectFilters">
+                <button type="button" class="filter-btn active" data-cat="all">Tümü</button>
+                @foreach (var cat in categories)
+                {
+                    <button type="button" class="filter-btn" data-cat="@cat.CategoryId">@cat.CategoryName</button>
+                }
+            </div>
+        </div>
+
+        <div class="row g-4">
+            @if (!Model.Any())
+            {
+                <div class="col-12 text-center text-muted py-5">
+                    Henüz yayında olan bir proje bulunmuyor.
+                </div>
+            }
+
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-6 dynamic-project-item" data-cat="@item.CategoryId">
+                    <div class="project-card">
+                        <div class="project-thumb-wrap">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" alt="@item.ProjectTitle" class="project-thumb-img">
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center justify-content-center h-100 py-5" style="background:#e9edea;">
+                                    <i class="bi bi-code-square" style="font-size:3rem; opacity:.4;"></i>
+                                </div>
+                            }
+                            <span class="project-category-tag">@item.Category?.CategoryName</span>
+                        </div>
+                        <div class="project-body">
+                            <h3 class="h4 fw-bold mb-2">@item.ProjectTitle</h3>
+                            <p class="text-muted small mb-4 flex-grow-1">@item.Description</p>
+
+                            @if (!string.IsNullOrEmpty(item.Technologies))
+                            {
+                                <div class="mb-4">
+                                    @foreach (var tech in item.Technologies.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                                    {
+                                        <span class="tech-badge">@tech.Trim()</span>
+                                    }
+                                </div>
+                            }
+
+                            <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                                <span class="text-muted small">
+                                    <i class="bi bi-calendar3 me-1"></i>@item.CreatedDate.ToString("MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))
+                                </span>
+                                <a href="#contact" class="btn-sage btn-sm">
+                                    <span>İletişime Geç</span>
+                                    <i class="bi bi-arrow-up-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    document.querySelectorAll('#dynamicProjectFilters .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#dynamicProjectFilters .filter-btn')
+                    .forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const selected = btn.dataset.cat;
+            document.querySelectorAll('.dynamic-project-item').forEach(item => {
+                item.style.display = (selected === 'all' || item.dataset.cat === selected) ? '' : 'none';
+            });
+        });
+    });
+</script>

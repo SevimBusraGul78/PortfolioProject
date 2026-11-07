@@ -1,0 +1,114 @@
+﻿@model MyAcademy_PortfolioProject.Entites.About
+
+@{
+    ViewData["Title"] = "EditAbout";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Beni Tanıyın Bölümü</h1>
+            <p class="page-subtitle">Sitedeki "Hakkımda" bölümünde görünen bilgiler.</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/HeroSection/EditHero" class="btn-pastel-secondary">
+                <i class="bi bi-house"></i><span>Ana Sayfa Üst Bölüm</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="side-drawer-card">
+        <form asp-action="EditAbout" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="AboutId" />
+
+            <div class="row g-3">
+
+                <div class="col-lg-8">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label-custom">Başlık <span class="required-star">*</span></label>
+                            <input asp-for="Heading" class="form-control-custom" placeholder="Örn: Teknolojiye Tutkuyla Bağlı Bir Yolculuk." />
+                            <span asp-validation-for="Heading" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label-custom">Hakkımda Metni <span class="required-star">*</span></label>
+                            <textarea asp-for="Content" class="form-control-custom" rows="7"
+                                      placeholder="Paragrafları Enter ile ayırabilirsiniz."></textarea>
+                            <small class="text-muted">Her yeni satır sitede ayrı bir paragraf olarak görünür.</small>
+                            <span asp-validation-for="Content" class="text-danger small d-block"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label-custom">Fotoğraf Altı Yazı</label>
+                            <input asp-for="Caption" class="form-control-custom" placeholder="Örn: Büşra Gül, İstanbul" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label-custom">Unvan Rozeti</label>
+                            <input asp-for="JobTitle" class="form-control-custom" placeholder="Örn: Junior Developer" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <label class="form-label-custom">Fotoğraf</label>
+                    <div class="mb-2">
+                        <img id="imagePreview" src="@Model.ImageUrl"
+                             style="width:100%; max-height:260px; object-fit:cover; border-radius:16px; border:1px solid #e5e5e5; @(string.IsNullOrEmpty(Model.ImageUrl) ? "display:none;" : "")" />
+                    </div>
+                    <input type="file" name="imageFile" class="form-control-custom"
+                           accept=".jpg,.jpeg,.png,.webp" onchange="previewImage(this)" />
+                    <small class="text-muted d-block">Boş bırakırsanız mevcut fotoğraf korunur.</small>
+                    <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <h6 class="fw-bold mb-1">İstatistikler</h6>
+                    <small class="text-muted">Boş bırakılan istatistik sitede görünmez.</small>
+                </div>
+
+                <div class="col-md-2"><label class="form-label-custom">1 - Değer</label><input asp-for="Stat1Value" class="form-control-custom" placeholder="2+" /></div>
+                <div class="col-md-2"><label class="form-label-custom">1 - Açıklama</label><input asp-for="Stat1Label" class="form-control-custom" placeholder="Yıl Deneyim" /></div>
+                <div class="col-md-2"><label class="form-label-custom">2 - Değer</label><input asp-for="Stat2Value" class="form-control-custom" placeholder="10+" /></div>
+                <div class="col-md-2"><label class="form-label-custom">2 - Açıklama</label><input asp-for="Stat2Label" class="form-control-custom" placeholder="Proje" /></div>
+                <div class="col-md-2"><label class="form-label-custom">3 - Değer</label><input asp-for="Stat3Value" class="form-control-custom" placeholder="5+" /></div>
+                <div class="col-md-2"><label class="form-label-custom">3 - Açıklama</label><input asp-for="Stat3Label" class="form-control-custom" placeholder="Teknoloji" /></div>
+
+                <div class="col-12">
+                    <label class="form-label-custom">Özgeçmiş Bağlantısı</label>
+                    <input asp-for="CvUrl" class="form-control-custom" placeholder="https://drive.google.com/..." />
+                    <small class="text-muted">Boş bırakılırsa "Özgeçmişimi İncele" butonu sitede görünmez.</small>
+                    <span asp-validation-for="CvUrl" class="text-danger small d-block"></span>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end mt-3">
+                    <button type="submit" class="btn-pastel-primary">
+                        <i class="bi bi-check-lg"></i><span>Kaydet</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function previewImage(input) {
+        const preview = document.getElementById('imagePreview');
+        if (input.files && input.files[0]) {
+            preview.src = URL.createObjectURL(input.files[0]);
+            preview.style.display = 'block';
+        }
+    }
+
+    @if (TempData["Success"] != null)
+    {
+            <text>
+            Swal.fire({ icon: 'success', title: '@TempData["Success"]', timer: 2000, showConfirmButton: false });
+            </text>
+    }
+</script>

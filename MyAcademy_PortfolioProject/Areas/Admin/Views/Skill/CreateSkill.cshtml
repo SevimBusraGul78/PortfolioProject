@@ -1,0 +1,56 @@
+﻿@model MyAcademy_PortfolioProject.Entites.Skill
+
+@{
+    ViewData["Title"] = "CreateSkill";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<main class="page-content-area">
+
+    <div class="content-header-row">
+        <div>
+            <h1 class="page-title">Yeni Yetenek Grubu</h1>
+            <p class="page-subtitle">Örneğin: Frontend, Backend, Veritabanı</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/Skill/SkillList" class="btn-pastel-secondary">
+                <i class="bi bi-arrow-left"></i>
+                <span>Listeye Dön</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="side-drawer-card">
+        <form asp-action="CreateSkill" method="post">
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">Grup Başlığı <span class="required-star">*</span></label>
+                    <input asp-for="Title" class="form-control-custom" placeholder="Örn: Frontend" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label-custom">İkon (Bootstrap Icon sınıfı)</label>
+                    <input asp-for="IconUrl" class="form-control-custom" placeholder="Örn: bi bi-code-slash" />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label-custom">Açıklama</label>
+                    <textarea asp-for="Description" class="form-control-custom" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end gap-2">
+                    <a href="/Admin/Skill/SkillList" class="btn-pastel-secondary">İptal</a>
+                    <button type="submit" class="btn-pastel-primary">
+                        <i class="bi bi-check-lg"></i>
+                        <span>Kaydet</span>
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</main>
