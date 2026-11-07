@@ -191,10 +191,6 @@ MyAcademy_PortfolioProject
 
 ---
 
----|
-| ![Ana Sayfa](screenshots/anasayfa.png) | ![Dashboard](screenshots/dashboard.png) |
-| ![Projeler](screenshots/projeler.png) | ![Gelen Kutusu](screenshots/gelenkutusu.png) |
-
----
+---|---
 
 **Geliştiren:** Sevim Büşra Gül
